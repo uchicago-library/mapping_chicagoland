@@ -1,7 +1,7 @@
 import click, json, rdflib, sys
 from flask import Flask, render_template, request, send_from_directory
 from flask.cli import with_appcontext
-from local import BASE, COLLECTION_TITLE, TRIPLES
+from config import BASE, COLLECTION_TITLE, TRIPLES
 from utils import build_database, get_browse, get_info, get_search
 
 import regex as re

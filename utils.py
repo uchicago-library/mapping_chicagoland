@@ -1,7 +1,7 @@
 import json, os, rdflib, sqlite3, sys
 from rdflib.plugins.sparql import prepareQuery
 from sortedcontainers import SortedDict
-from local import DB, TRIPLES
+from config import DB, TRIPLES
 
 import regex as re
 
