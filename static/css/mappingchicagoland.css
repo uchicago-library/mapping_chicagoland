@@ -1,0 +1,467 @@
+/* Just removed the body-container class, 
+doesn't seem necessary. */
+/*.digitalobjectpage .body-container{
+	padding: 0;
+}*/
+html{	font-size: 14px; }
+body{	color: #000 }
+pre{	text-wrap: wrap; }
+a{		color: #3174ae }
+.breadcrumbs{ padding-left: 15px; }
+
+.main-content{padding-top: 2rem; }
+@media (min-width: 1400px){
+	.container {
+	    width: 1300px;
+	}
+}
+@media (min-width: 1500px){
+	.container {
+	    width: 1400px;
+	}
+}
+.btn-group-xs>.btn, .btn-xs {
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #fff;
+}
+.language-selector-btn{
+	background: #7a7270;
+	color: white;
+	font-weight: 500;
+	border-radius: 0 0 4px 4px;
+	padding: 4px 8px;
+}
+.language-selector-btn:hover,
+.language-selector-btn:active,
+.language-selector-btn:focus{
+	opacity: 0.85;
+	background: #7a7270;
+	color: white;
+}
+html[lang="es"] .language-selector-btn .lang-en{
+	opacity: .5;
+}
+html[lang="en"] .language-selector-btn .lang-es{
+	opacity: .5;
+}
+.main-content>.row>[class^='col']{
+	margin-bottom: 2rem;
+}
+
+.gray-surface{
+  background: #f6f7f2;
+	padding: 1rem 1.5rem;
+}
+
+h1{
+	margin-bottom: 2rem;
+}
+
+.sidebar{
+	background: #f6f7f2;
+	padding: 0;
+	margin-bottom: 1rem;
+}
+.sidebar ul{
+	padding: 0;
+	list-style-type: none;
+	width: 100%;
+}
+.sidebar ul li{
+	padding-bottom: 1rem;
+	padding-bottom: 0;
+	float: unset;
+	width: 100%;
+}
+.sidebar ul li.active{
+  background-color: #eee;
+}
+
+.mlc-banner{
+	/*background: url('/static/img/banner.wp2');*/
+	background: url('/static/img/banner.jpg');
+	background-size: cover;
+  background-position: center;
+  min-height: 80px;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: .5rem;
+}
+.mlc-banner p{
+  color: white;
+  font-weight: 600;
+  font-size: 1.3rem;
+  background: #800000;
+  background: #800000d0;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  margin-bottom: 0;
+  margin-top: 0;
+  line-height: 1.5em;
+  display: inline-block;
+}
+
+/* ======= UTILS */
+.mb-1{
+	margin-bottom: 1rem;
+}
+.mb-2{
+	margin-bottom: 2rem;
+}
+.mr-1{
+	margin-right: 1rem;
+}
+.pr-1{
+	padding-right: 1rem;
+}
+.w-100{
+	width: 100%;
+}
+
+/* ======= SIDEBAR LEFT */
+
+.sidebar.sidebar-left .navbar{
+	margin: 0;
+	min-height: unset;
+}
+.sidebar.sidebar-left .btn.sidebar-collapse-btn{
+	background: transparent;
+	color: #800000;
+	font-weight: 600;
+}
+.sidebar.sidebar-left .sidebar-collapse-btn .fa-plus{
+	display: none;
+}
+.sidebar.sidebar-left .sidebar-collapse-btn.collpased .fa-plus{
+	display: block;
+}
+.sidebar.sidebar-left .sidebar-collapse-btn.collpased .fa-minus{
+	display: none;
+}
+.sidebar.sidebar-left .navbar .nav.navbar-nav{
+	margin: 0;
+	padding-left: 1rem;
+	padding-left: 0;
+}
+.sidebar.sidebar-left .navbar .nav.navbar-nav li a{
+  padding: .8rem 1rem !important;
+}
+@media (min-width: 992px){
+	/* force menu to be open when in larger screens */
+	.sidebar.sidebar-left .collapse{
+		display: block !important;
+	}
+}
+/*#content{
+	padding-left: 2rem;
+}*/
+
+/* ======= SIDEBAR RIGHT */
+.sidebar.sidebar-right{
+	padding: 1rem 1.5rem;
+}
+.sidebar.sidebar-right .form-group{
+	margin: 0;
+}
+.sidebar.sidebar-right .collections{
+	padding-bottom: 1.5rem;
+}
+.sidebar.sidebar-right h2{
+	margin: 0;
+	font-size: 1.5rem;
+}
+.sidebar.sidebar-right h3{
+	font-size: 1.1rem;
+}
+.sidebar.sidebar-right ul li:not(:last-child){
+	margin-bottom: .3rem;
+}
+.sidebar.sidebar-right dl{
+	display: block;
+}
+.sidebar.sidebar-right dt{
+  border-top: 1px solid #ddd;
+  border: none;
+	padding-top: 0.7rem;
+	padding-bottom: 0.3rem;
+}
+.sidebar.sidebar-right dd{
+	padding-left: 0;
+	padding-top: 0;
+	padding-bottom: 1rem;
+  border: none;
+}
+
+/* =============== SEARCH */
+.search-results-facet{
+	padding-right: .8rem;
+}
+/* =============== BROWSE */
+.browse-bar{
+	margin-bottom: 2rem;
+}
+.browse-bar h2{
+	margin-top: 0rem;
+}
+.browse-bar .btn{	
+	background-color: #645E5E;
+}
+.browse-bar .btn:active,
+.browse-bar .btn:hover,
+.browse-bar .btn:focus{	
+	color: #fff;
+	background-color: #7b7474;
+}
+.browse-bar .btn:not(:last-child){	
+	margin-right: .5rem;
+}
+
+.browse-list-wrapper ul,  
+ul.no-style-list{
+	list-style-type: none;
+	padding: 0;
+}
+
+.search-results-page .page-title {
+	padding: 0;
+	border: none;
+	margin-bottom: 2rem;
+}
+.search-results-page .page-title h1{
+	margin: 0;
+}
+.search-results-page ul li.search-result{
+	margin-bottom: 2rem;
+}
+.search-results-page .search-results-series-title{
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	margin: 0;
+}
+.search-results-page .search-results-series-title>*:first-child,
+.search-results-page .search-results-series-title-badge>*:first-child{
+	margin-right: 0.5rem
+}
+.search-results-page .search-results-series-title .series-result-series-label{
+	font-size: 1.1em;
+  color: #525252;
+  font-weight: 600;
+  line-height: 1.4em;
+}
+.search-results-page .search-results-series-title .search-results-series-title-badge{
+	display: flex;
+	align-items: flex-start;
+	margin: 0;
+}
+.search-results-page .search-results-series-title h2,
+.search-results-page .search-results-series-title h3{
+	flex-grow: 1;
+	margin-top: 0;
+}
+.search-results-page ul li.search-result p{
+	margin: 0;
+}
+
+
+
+.object-metadata .sr-link-in-row{
+	color: inherit;
+}
+.object-metadata dl{
+	display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+}
+.object-metadata dt{
+	border: none;
+	color: #757575;/* same as .text-muted */
+	padding: .3rem .5rem 0 .5rem;
+	flex-basis: 100% !important;
+}
+.object-metadata dd{
+	border-top: none;
+	border-bottom: 1px dashed #ddd;
+	padding: 0 .5rem .3rem .5rem;
+	flex-basis: 100% !important;
+}
+.object-metadata dd:after{
+	content:'\00000a';
+}
+
+@media (min-width:420px){
+	.object-metadata dt{
+		border-bottom: 1px dashed #ddd;
+		flex-basis: 30% !important;
+		padding-top: 0;
+	}
+	.object-metadata dd{
+		flex-basis: 70% !important;
+		padding-bottom: 0;
+	}
+}
+
+.object-metadata dl>*:nth-child(4n-1),
+.object-metadata dl>*:nth-child(4n){
+	background: #fafafa;
+}
+/* Metadata Description List */ 
+/* fix default behaviour */ 
+@media (min-width: 62em){
+	dl {
+		padding-left: 0;
+	}
+} 
+
+
+
+
+/* ITEMS */
+.items-listing{
+	margin: 0;
+}
+.items-listing .item-card{
+	display: block;
+	margin-bottom: .3rem;
+	margin-bottom: .5rem;
+	border: 1px solid #eee;
+	border-radius: .5rem;
+	padding: .3rem .5rem;
+	background: white;
+}
+.items-listing .item-card span:not(.item-card-title){
+	color: black;
+	text-decoration: none !important;
+}
+.text-muted-extra{
+	color: #757575 !important;
+}
+.items-listing .item-card span.item-card-title{
+	max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 5px;
+  padding-right: 3px;
+}
+.items-listing .item-card:active span.item-card-title,
+.items-listing .item-card:focus span.item-card-title,
+.items-listing .item-card:hover span.item-card-title{
+	text-decoration: underline;
+}
+.items-listing .item-card:active,
+.items-listing .item-card:focus,
+.items-listing .item-card:hover{
+	box-shadow: 1px 2px 4px #d9d9d9;
+	text-decoration: none !important;
+}
+.items-listing .item-card .item-card-title-row,
+.items-listing .item-card .item-card-content-row{
+	display: flex;
+}
+.items-listing .item-card .item-card-content-row{
+	align-items: flex-end;
+}
+.items-listing .item-card .item-card-title-row>*:first-child,
+.items-listing .item-card .item-card-content-row>*:first-child {
+  flex-grow: 1;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 1rem;
+}
+.items-listing .item-card .item-card-content-row p{
+  margin: 0;
+}
+.items-listing .item-card .item-card-title-row .item-icon{
+  top: .3rem;
+  position: relative;
+}
+@media (min-width:500px) and (max-width:992px){
+	.items-listing li{
+  	width: 50%;
+	}
+}
+
+.sr-link-in-row:not(:last-child){
+	padding-right: .8rem;
+}
+/* =============== BROWSE */
+.browse-list-wrapper ul li{
+  padding: 0;
+  margin: 0 !important;
+  height: 42px;
+}
+@media (min-width:500px) and (max-width:992px){
+	.browse-list-wrapper ul li{
+  	width: 33.33%;
+	}
+}
+.browse-list-wrapper ul li a{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+  padding: 0.2rem .4rem;
+  margin: 0;
+  line-height: 1.1;
+  vertical-align: text-bottom;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  /*cursor: pointer;*/
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+}
+/* =============== ITEM */
+/* Title Element */
+/* easy fix */
+/* 
+  * to have a more strudy solution,
+  * the default title styling needs to be changed
+  */
+.title-wrapper {
+	display: flex;
+	align-items: flex-start;
+	border-bottom: 1px solid #D6D6CE;
+	margin-bottom: 2rem;
+}
+.title-wrapper h1{
+	/*padding-right: 150px;*/
+	border: none;
+	flex-grow: 1;
+	margin: 0;
+}
+.title-wrapper .title-id-badge{
+	display: flex;
+	flex-direction: column;    
+	align-items: flex-end;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+}
+
+
+/* Panopto */
+.panopto-iframe{
+	display: block;
+	max-width: 100%;
+  margin: 0 auto 1rem;
+}
+
+
+
+/* =============== Suggestions 
+.suggest-corrections-main{
+	padding: 1rem;
+}*/

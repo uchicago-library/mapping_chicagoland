@@ -1,6 +1,9 @@
-import json, os, rdflib, re, sqlite3, sys
+import json, os, rdflib, sqlite3, sys
 from rdflib.plugins.sparql import prepareQuery
+from sortedcontainers import SortedDict
 from local import DB, TRIPLES
+
+import regex as re
 
 def get_decade_from_year(s):
     m = re.search('([0-9]{4})', s)
@@ -40,6 +43,19 @@ def get_arks(g):
 
 
 def get_info(ark):
+    con = sqlite3.connect(DB)
+    cur = con.cursor()
+
+    for row in cur.execute(
+        '''
+            select info from item where id=?;
+        ''',
+        (
+            ark,
+        )
+    ):
+        return json.loads(row[0])
+
     g = rdflib.Graph()
     g.parse(TRIPLES)
 
@@ -49,7 +65,7 @@ def get_info(ark):
         'dates':        'http://purl.org/dc/terms/date',
         'descriptions': 'http://purl.org/dc/elements/1.1/description',
         'languages':    'http://purl.org/dc/elements/1.1/language',
-        'local_id':     'http://lib.uchicago.edu/local_preservation_identifier',
+        'local_id':     'http://lib.uchicago.edu/identifier',
         'publishers':   'http://purl.org/dc/elements/1.1/publisher',
         'spatials':     'http://purl.org/dc/terms/spatial',
         'subjects':     'http://purl.org/dc/elements/1.1/subject',
@@ -136,7 +152,7 @@ def get_browse(browse_type):
     con = sqlite3.connect(DB)
     cur = con.cursor()
 
-    browse = {}
+    browse = SortedDict()
     for row in cur.execute(
         ''' 
             select term, id from browse where type=? order by id;
@@ -152,6 +168,118 @@ def get_browse(browse_type):
         browse[term].append(id)
     return browse
 
+
+def convert_raw_query_to_fts(query):
+    """
+    Convert a raw user query to a series of single words, joined by boolean
+    AND, and suitable for passing along to SQLite FTS.
+
+    Parameters:
+        query (str): a search string.
+
+    Returns:
+        str: search terms cleaned and separated by ' AND '.
+    """
+    if query:
+        # limit queries to 256 characters. (size chosen arbitrarily.)
+        query = query[:256]
+
+        # replace all non-unicode letters or numbers in the query with a
+        # single space. This should strip out punctuation, etc.
+        query = re.sub("[^\\p{L}\\p{N}]+", " ", str(query))
+
+        # replace all whitespace with a single space.
+        query = ' '.join(query.split())
+
+    # join all search terms with AND.
+    # limit queries to 32 search terms. (size chosen arbitrarily.)
+    match_string = []
+    for q in query.split(' '):
+        match_string.append(q)
+    match_string = ' AND '.join(match_string[:32])
+
+    return match_string
+
+
+def get_search(query, facets=[], sort_type='rank'):
+    """
+    Get search results.
+
+    Parameters:
+        query (str):     a search string.
+        facets (list):   a list of strings, where each string begins with a
+                         browse/facet type, followed by a colon, followed
+                         by the term.
+        sort_type (str): e.g., 'rank', 'date'
+
+    Returns:
+        list: a list, where each element contains a three-tuple with a
+              series identifier, a list of item identifiers with hits in
+              that series, and a rank.
+    """
+    assert sort_type in ('date', 'rank', 'series.id')
+
+    con = sqlite3.connect(DB)
+    cur = con.cursor()
+
+    if query:
+        query = convert_raw_query_to_fts(query)
+  
+    subqueries = []
+    for _ in facets:
+        subqueries.append('''
+            select id
+            from browse
+            where type=?
+            and term=?
+        ''')
+
+    vars = []
+    if query:
+        vars.append(query)
+    for facet in facets:
+        match = re.match('^([^:]*):(.*)$', facet)
+        vars.append(match.group(1))
+        vars.append(match.group(2))
+
+    # Execute search.
+
+    if query and facets:
+        sql = '''
+                select id, info, rank
+                from item
+                where text match ?
+                and id in ({})
+                order by {};
+        '''.format(' intersect '.join(subqueries), sort_type)
+    elif query:
+        sql = '''
+                select id, info, rank
+                from item
+                where text match ?
+                order by {};
+        '''.format(sort_type)
+    elif facets:
+        sql = '''
+                select id, info
+                from item
+                where id in ({})
+                order by id
+        '''.format(' intersect '.join(subqueries))
+    else:
+        sql = '''
+                select id, info
+                from item
+                order by id
+        '''
+
+    results = []
+    for row in cur.execute(sql, vars).fetchall():
+        if len(row) == 1:
+            results.append([row[0], json.loads(row[1]), 0.0])
+        else:
+            results.append([row[0], json.loads(row[1]), row[2]])
+    return results
 
 def build_database():
     """

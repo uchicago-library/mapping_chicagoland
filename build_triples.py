@@ -4165,7 +4165,7 @@ if __name__ == '__main__':
             g.add((cho, rdflib.DCTERMS.type, rdflib.Literal('Image')))
 
             # uchicago:identifier
-            g.add((cho, NAMESPACES['uchicago']['local_preservation_identifier'], rdflib.Literal(digital_id)))
+            g.add((cho, NAMESPACES['uchicago']['identifier'], rdflib.Literal(digital_id)))
         
             #################### 
             # NON-MARC TRIPLES #

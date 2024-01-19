@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="" id="content" role="main">
+    <div class="title-wrapper">
+      <h1>
+        {{ title_slug }}
+      </h1>
+    </div>
+
+ <iframe src="https://www.lib.uchicago.edu/viewer/?manifest=https://iiif-collection.lib.uchicago.edu/object/ark:/61001/{{ permanent_urls.0.replace('https://ark.lib.uchicago.edu/ark:61001/', '')|urlencode }}.json#?c=&m=&cv=" width="750" height="600" allowfullscreen frameborder="0"></iframe>
+
+
+    <div class="object-metadata">
+      <dl>
+        {% if titles %}
+          <dt>Title:</dt>
+          <dd>
+            {% for i in titles %}
+              {{ i }}<br>
+            {% endfor %}
+          </dd>
+        {% endif %}
+
+        {% if local_id %}
+          <dt>Item Identifier:</dt>
+          <dd>
+            {% for i in local_id %}
+              {{ i }}<br>
+            {% endfor %}
+          </dd>
+        {% endif %}
+
+        {% if publishers %}
+          <dt>Publisher(s):</dt>
+          <dd>
+            {% for i in publishers %}
+              {{ i }}<br>
+            {% endfor %}
+          </dd>
+        {% endif %}
+
+        {% if creators %}
+          <dt>Creator(s):</dt>
+          <dd>
+            {% for i in creators %}
+              {{ i }}<br>
+            {% endfor %}
+          </dd>
+        {% endif %}
+
+        {% if languages %}
+          <dt>Language:</dt>
+          <dd>
+            {% for i in languages %}
+              {{ i }}<br>
+            {% endfor %}
+          </dd>
+        {% endif %}
+
+        {% if spatials %}
+          <dt>Location:</dt>
+          <dd>
+            {% for i in spatials %}
+              {{ i }}<br>
+            {% endfor %}
+          </dd>
+        {% endif %}
+
+        {% if subjects %}
+          <dt>Subject:</dt>
+          <dd>
+            {% for i in subjects %}
+              {{ i }}<br>
+            {% endfor %}
+          </dd>
+        {% endif %}
+
+        {% if dates %}
+          <dt>Date:</dt>
+          <dd>
+            {% for i in dates %}
+              {{ i }}<br>
+            {% endfor %}
+          </dd>
+        {% endif %}
+
+        {% if types %}
+          <dt>Type:</dt>
+          <dd>
+            {% for i in types %}
+              {{ i }}<br>
+            {% endfor %}
+          </dd>
+        {% endif %}
+
+        {% if descriptions %}
+          <dt>Description:</dt>
+          <dd>
+            {% for i in descriptions %}
+              {{ i }}<br>
+            {% endfor %}
+          </dd>
+        {% endif %}
+
+        {% if rights %}
+          <dt>Rights:</dt>
+          <dd>
+            {% for i in rights %}
+              {{ i }}<br>
+            {% endfor %}
+          </dd>
+        {% endif %}
+
+        {% if permanent_urls %}
+          <dt>Permanent URL:</dt>
+          <dd>
+            {% for i in permanent_urls %}
+              {{ i }}<br>
+            {% endfor %}
+          </dd>
+        {% endif %}
+      </dl>
+    </div>
+  </div> <!-- // .main -->
+{% endblock %}

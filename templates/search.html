@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <div class="search-results-page" id="content" role="main">
+
+  <!-- Main Content -->
+  <div class="page-title">
+  <h1>{{ title_slug }}</h1>
+  </div><!-- // search-results -->
+
+  <div class="listing" role="main">
+  {% if results %}
+    <ul class="no-style-list">
+    {# RESULT #}
+    {% for result in results %}
+      <li class="search-result">
+      <div style="column-gap: 20px; display: flex;">
+      <div style="flex: 0 0 175px; margin-top: 20px;">
+      <a href="/item/{{ result.0|replace('https://ark.lib.uchicago.edu/ark:61001/', '')|urlencode }}/">
+      <img src="https://iiif-server.lib.uchicago.edu/ark%3A61001%2F{{ result.0|replace('https://ark.lib.uchicago.edu/ark:61001/', '')|urlencode }}%2F00000001/full/!175,175/0/default.jpg"/>
+      </a>
+      </div>
+       <div>
+      {# METADATA #}
+      <h3><a href="/item/{{ result.0|replace('https://ark.lib.uchicago.edu/ark:61001/', '')|urlencode }}/">{{ result.1.titles.0 }}</a></h3>
+      <div class="object-metadata">
+        <dl>
+          {% if result.1.local_id %}
+            <dt>Local ID(s): </dt>
+            <dd>
+            {% for local_id in result.1.local_id %}
+              {{ local_id }}
+            {% endfor %}
+            </dd>
+          {% endif %}
+          {% if result.1.languages %}
+            <dt>Language(s): </dt>
+            <dd>
+            {% for language in result.1.languages %}
+              {{ language }}
+            {% endfor %}
+            </dd>
+          {% endif %}
+          {% if result.1.spatials %}
+            <dt>Spatial(s): </dt>
+            <dd>
+            {% for spatial in result.1.spatials %}
+              {{ spatial }}
+            {% endfor %}
+            </dd>
+          {% endif %}
+        </dl>
+      </div>
+      </div>
+      </li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p class="lead">
+    <em>No results found.</em>
+    </p>
+  {% endif %}
+  </div>
+
+  </div>
+{% endblock %}
