@@ -9,7 +9,8 @@ import regex as re
 app = Flask(
     __name__, 
     instance_relative_config=True,
-    static_folder='static'
+    static_folder='static',
+    static_url_path=''
 )
 
 # CLI
@@ -212,3 +213,14 @@ def web_search():
         results=results,
         title_slug=title_slug
     )
+
+@app.route('/viewer/')
+def web_viewer():
+    return render_template(
+        'viewer.html'
+    )
+
+# HACK for Universal Viewer
+@app.route('/viewer/uv-dist-umd/<path:path>')
+def reroute_to_uv_dist_umd(path):
+    return send_from_directory('static/uv-dist-umd', path)
