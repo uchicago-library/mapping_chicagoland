@@ -1,8 +1,8 @@
 import click, json, rdflib, sys
 from flask import Flask, render_template, request, send_from_directory
 from flask.cli import with_appcontext
-from config import BASE, COLLECTION_TITLE, TRIPLES
-from utils import build_database, get_browse, get_info, get_search
+from config import ALLMAPS_URL_DATA, BASE, COLLECTION_TITLE, TRIPLES
+from utils import build_database, get_allmaps_urls, get_browse, get_info, get_search
 
 import regex as re
 
@@ -14,6 +14,22 @@ app = Flask(
 )
 
 # CLI
+@app.cli.command(
+    'build-allmaps-url-lookup',
+    short_help='Build a JSON lookup for Allmaps URLs.'
+)
+@click.argument('noid_list')
+def cli_build_allmaps_url_lookup(noid_list):
+    data = {}
+    with open(noid_list) as f:
+        noids = f.read().split('\n')
+    for i, noid in enumerate(noids):
+        noid = noid.replace('ark:/61001', '').replace('ark:61001/', '').strip()
+        if noid:
+            data[noid] = get_allmaps_urls(noid)
+    with open(ALLMAPS_URL_DATA, 'w') as f:
+        f.write(json.dumps(data))
+
 
 @app.cli.command(
     'build-database',
@@ -172,7 +188,7 @@ def web_item(noid):
     
     return render_template(
         'item.html',
-        **(item_data | { 'collection_title': COLLECTION_TITLE, 'title_slug': title_slug, 'breadcrumb': breadcrumb })
+        **(item_data | { 'collection_title': COLLECTION_TITLE, 'title_slug': title_slug, 'breadcrumb': breadcrumb, 'enumerate': enumerate })
     )
 
 @app.route('/search/')

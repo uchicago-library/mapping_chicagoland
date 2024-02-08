@@ -1,7 +1,7 @@
-import json, os, rdflib, sqlite3, sys
+import json, os, rdflib, requests, sqlite3, sys, urllib.parse
 from rdflib.plugins.sparql import prepareQuery
 from sortedcontainers import SortedDict
-from config import DB, TRIPLES
+from config import ALLMAPS_URL_DATA, DB, TRIPLES
 
 import regex as re
 
@@ -56,6 +56,7 @@ def get_info(ark):
     ):
         return json.loads(row[0])
 
+def get_info_from_triples(ark):
     g = rdflib.Graph()
     g.parse(TRIPLES)
 
@@ -127,6 +128,17 @@ def get_info(ark):
         rights.add(str(row[0]))
     info['rights'] = sorted(list(rights))
 
+    with open(ALLMAPS_URL_DATA) as f:
+        allmaps_urls = json.loads(f.read())
+
+    noid = ark.replace('https://ark.lib.uchicago.edu/', '').replace('ark:/61001/', '').replace('ark:61001/', '')
+
+    info['allmaps_urls'] = [{}]
+    try:
+        info['allmaps_urls'][0] = allmaps_urls[noid]
+    except KeyError:
+        print('could not find ' + noid)
+
     return info
 
 
@@ -141,10 +153,13 @@ def get_search_tokens(info):
         str: a string that can be searched via SQLite.
     """
     search_tokens = []
-    for value_list in info.values():
-        for v in value_list:
-            for s in v.split():
-                search_tokens.append(s.upper())
+    for k, value_list in info.items():
+        if k in ('allmaps_urls',):
+            continue
+        else:
+            for v in value_list:
+                for s in v.split():
+                    search_tokens.append(s.upper())
     return ' '.join(search_tokens)
 
 
@@ -281,6 +296,60 @@ def get_search(query, facets=[], sort_type='rank'):
             results.append([row[0], json.loads(row[1]), row[2]])
     return results
 
+def get_allmaps_urls(ark):
+    """
+    Get Allmaps URLs over HTTP.
+
+    Parameters:
+        ark (str): an ARK identifier.
+
+    Returns:
+        dict: a dictionary with object-level (ARK) level URLs and image-level
+              URLs.
+    """
+    def get_item_count(ark):
+        return len(
+            requests.get(
+                'https://iiif-collection.lib.uchicago.edu/object/ark:/61001/{}.json'.format(
+                    ark.replace('ark:61001/', '').replace('ark:/61001/', '')
+                )
+            ).json()['items']
+        )
+    
+    def get_image_server_url(ark, n):
+        return 'https://iiif-server.lib.uchicago.edu/ark:61001/{}/{:08d}'.format(
+            ark.replace('ark:61001/', '').replace('ark:/61001/', ''),
+            n
+        )
+
+    manifest = 'https://iiif-collection.lib.uchicago.edu/object/ark:/61001/{}.json'.format(
+        ark.replace('ark:61001/', '').replace('ark:/61001/', '')
+    )
+    urls = {
+        'editor_url': 'https://editor.allmaps.org/#/collection?url={}'.format(urllib.parse.quote_plus(manifest)),
+        'viewer_url': 'https://viewer.allmaps.org/?url={}'.format(urllib.parse.quote_plus(manifest)),
+        'image_level_data': []
+    }
+    for i in range(1, get_item_count(ark) + 1):
+        image_server_url = get_image_server_url(ark, i)
+        try:
+            for item in requests.get(
+                'https://annotations.allmaps.org/?url={}'.format(
+                    image_server_url
+                )
+            ).json()['items']:
+                map_id = item['id']
+                urls['image_level_data'].append({
+                    'annotation_url': 'https://annotations.allmaps.org/maps/{}'.format(urllib.parse.quote_plus(map_id)),
+                    'xyz_template': 'https://allmaps.xyz/maps/{}/{{z}}/{{x}}/{{y}}.png'.format(urllib.parse.quote_plus(map_id))
+                })
+        except KeyError:
+            print('no items key in https://annotations.allmaps.org/?url={}'.format(
+                image_server_url
+            ))
+            print('try with manifest ' + manifest)
+    return urls
+
 def build_database():
     """
     Build SQLite database.
@@ -294,7 +363,7 @@ def build_database():
     # build info dictionary
     info_dict = {}
     for ark in get_arks(g):
-        info_dict[ark] = get_info(ark)
+        info_dict[ark] = get_info_from_triples(ark)
 
     if os.path.exists(DB):
         os.remove(DB)
@@ -347,6 +416,8 @@ def build_database():
                 )
 
     for ark, info in info_dict.items():
+        noid = ark.replace('https://ark.lib.uchicago.edu/', '').replace('ark:/61001/', '').replace('ark:61001/', '').strip()
+
         if 'years' in info and len(info['years']) > 0:
             year = info['years'][0]
         else:

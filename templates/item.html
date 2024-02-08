@@ -120,6 +120,23 @@
             {% endfor %}
           </dd>
         {% endif %}
+
+        {% if allmaps_urls %}
+            <dt>Allmaps URLs:</dt>
+            <dd>
+                {% for i in allmaps_urls %}
+                    <a href="{{ i.editor_url }}">Editor URL</a><br/>
+                    <a href="{{ i.viewer_url }}">Viewer URL</a><br/><br/>
+                    Insert-level data:<br/><br/>
+                    {% for j, k in enumerate(i.image_level_data) %}
+                        {{ j + 1 }}.<br/>
+                        <a href="{{ k.annotation_url }}">Annotation URL</a><br/>
+                        XYZ Template: {{ k.xyz_template }}<br/>
+                        <hr/>
+                    {% endfor %}
+                {% endfor %}
+            </dd>
+        {% endif %}
       </dl>
     </div>
   </div> <!-- // .main -->
