@@ -14,3 +14,6 @@ pip install -r requirements.txt
 
 Get a config.py from another developer, along with an optional all maps 
 data file, project triples, project database and list of project noids. 
+
+## AllMaps API Notes
+[See this notebook.](https://www.kaggle.com/code/leventhalmapcenter/allmaps-u-chicago/notebook)
