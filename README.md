@@ -2,7 +2,7 @@
 
 ## Installling locally
 
-console```
+```console
 mkdir mapping_chicagoland
 cd mapping_chicagoland
 python3 -m venv venv
