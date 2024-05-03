@@ -3,8 +3,6 @@
 ## Installling locally
 
 ```console
-mkdir mapping_chicagoland
-cd mapping_chicagoland
 python3 -m venv venv
 source venv/bin/activate
 git clone https://github.com/uchicago-library/mapping_chicagoland.git
