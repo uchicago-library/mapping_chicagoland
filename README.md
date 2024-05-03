@@ -43,7 +43,7 @@ flask build-database
 
 Build a JSON lookup of AllMaps data (basically prec-caching these requests):
 ```console
-flask build-allmaps-url-lookup &lt;noid-list&gt;
+flask build-allmaps-url-lookup <noid-list>
 ```
 
 View lists of browses:
