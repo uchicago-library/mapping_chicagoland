@@ -125,7 +125,6 @@
             <dt>Allmaps URLs:</dt>
             <dd>
                 {% for i in allmaps_urls %}
-                    <a href="{{ i.editor_url }}">Editor URL</a><br/>
                     <a href="{{ i.viewer_url }}">Viewer URL</a><br/><br/>
                     Insert-level data:<br/><br/>
                     {% for j, k in enumerate(i.image_level_data) %}
